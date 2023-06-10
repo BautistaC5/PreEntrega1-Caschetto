@@ -1,17 +1,15 @@
-
 import "./App.css";
-import NavBar from "./components/NavBar.jsx";
-import CartWidget from "./components/CartWidget";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ItemListContainer from "./components/ItemListContainer";
+
+import MainRouter from "./routes/MainRouter";
 
 const App = () => {
+
   return (
     <div className="App">
-      <NavBar />
-      <ItemListContainer greeting="Bienvenido a la tienda"/>
+      <MainRouter />
+      
     </div>
-
   );
 };
 

@@ -6,3 +6,26 @@
 body {
   background-color: black;
 }
+
+.divCards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 30px;
+  gap: 10px;
+}
+
+.productCard {
+  color: rgb(57, 255, 20);
+  background-color: black!important;
+  padding: 5px;
+}
+
+.productCard a {
+  text-decoration: none;
+  color: black;
+  background-color: rgb(57, 255, 20);
+  padding: 10px;
+  border-radius: 4px;
+}
