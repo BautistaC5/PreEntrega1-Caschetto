@@ -1,4 +1,4 @@
-export const ProductsData = [
+export const ProductData = [
   {
     id: 1,
     title: "Camiseta Alemania",
