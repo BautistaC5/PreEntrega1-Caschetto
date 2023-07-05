@@ -1,34 +1,37 @@
-import React from "react";
-import ProductCard from "../components/ProductCard";
-const ItemDetailContainer = ({ productData }) => {
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import ItemDetail from "./ItemDetail";
+import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
+
+const ItemDetailContainer = () => {
+  const { id } = useParams();
+  const [productData, setProductData] = useState(null);
+
+  useEffect(() => {
+    const getProduct = async () => {
+      const db = getFirestore();
+      const productRef = doc(db, "products", id);
+      const productDoc = await getDoc(productRef);
+
+      if (productDoc.exists()) {
+        setProductData({ id: productDoc.id, ...productDoc.data() });
+      }
+    };
+
+    getProduct();
+  }, [id]);
+
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "space-evenly"
-      }}
-    >
-      {productData.map((product) => {
-        return <ProductCard key={product.id} productData={product} />;
-      })}
-      
-      <div  style={{
-        width: "60%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "start",
-        color: "white",
-        alignItems: "start"
-      }}>
-        <h2>Descripcion</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe explicabo eaque tempore impedit magni harum debitis repudiandae, voluptas in repellat dolorum labore non molestias excepturi reprehenderit neque expedita odit accusantium.
-        </p>
-      </div>
-      
+    <div>
+      {productData ? (
+        <>
+          <ItemDetail productData={productData} />
+          <h2>DESCRIPCION</h2>
+          <p>{productData.description}</p>
+        </>
+      ) : (
+        <p>Cargando producto...</p>
+      )}
     </div>
   );
 };
