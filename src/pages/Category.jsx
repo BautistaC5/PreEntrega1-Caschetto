@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ItemListContainer from "../components/ItemListContainer";
-import { ProductData } from "../json/Products";
 import { useParams } from "react-router-dom";
+import { collection, query, where, getDocs, getFirestore } from "firebase/firestore";
+
 const Category = () => {
-  const {categoryId} = useParams()
+  const { categoryId } = useParams();
+  const [productsData, setProductsData] = useState([]);
+  const db = getFirestore();
 
-  const productsFilteredByCategory = ProductData.filter(products => products.category === categoryId);
+  useEffect(() => {
+    const fetchProductsByCategory = async () => {
+      const productCollection = collection(db, "products");
+      const categoryQuery = query(productCollection, where("category", "==", categoryId));
 
-  return <ItemListContainer productsData={productsFilteredByCategory} />;
+      try {
+        const snapshot = await getDocs(categoryQuery);
+        const products = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setProductsData(products);
+      } catch (error) {
+        console.error("Error fetching products by category:", error);
+      }
+    };
+
+    fetchProductsByCategory();
+  }, [categoryId, db]);
+
+  return <ItemListContainer productsData={productsData} />;
 };
 
 export default Category;
